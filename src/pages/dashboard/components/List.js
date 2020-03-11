@@ -5,24 +5,23 @@ import { DropOption } from 'components'
 import { Trans, withI18n } from '@lingui/react'
 import Link from 'umi/link'
 import { router } from 'utils'
-// import styles from './List.less'
 
 const { confirm } = Modal
-
-@withI18n()
 class List extends PureComponent {
-   // 选中行
-   onClickRow = (record) => {
+  // 选中行
+  onClickRow = record => {
+    const { onSwitchItem } = this.props
+    onSwitchItem(record)
     return {
       onClick: () => {
-        router.push(`/dashboard/homeDetail?id=${123}`)
+        router.push(`/dashboard/homeDetail?id=${record.id}`)
       },
-    };
+    }
   }
 
   render() {
     const { onDeleteItem, onEditItem, i18n, ...tableProps } = this.props
-    const {titleList,columns} = tableProps
+    const { titleList, columns } = tableProps
     // const columns = [
     //   {
     //     title: '任务号',
@@ -99,7 +98,7 @@ class List extends PureComponent {
         {...tableProps}
         // className={styles.table}
         bordered
-        scroll={{ x: 1200,y: 240}}
+        scroll={{ x: 1200, y: 240 }}
         columns={columns}
         simple
         rowKey={record => record.id}
@@ -110,6 +109,7 @@ class List extends PureComponent {
 }
 
 List.propTypes = {
+  onSwitchItem: PropTypes.func,
   onDeleteItem: PropTypes.func,
   onEditItem: PropTypes.func,
   location: PropTypes.object,

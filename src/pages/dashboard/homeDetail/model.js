@@ -4,58 +4,44 @@ import api from 'api'
 import { pathMatchRegexp } from 'utils'
 import { model } from 'utils/model'
 
-const {
-  queryUserList,
-  createUser,
-  removeUser,
-  updateUser,
-  removeUserList,
-} = api
+const { checkTask } = api
 
 export default modelExtend(model, {
   namespace: 'homeDetail',
-  state: {
-
-  },
+  state: {},
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (pathMatchRegexp('/dashboard/detail', location.pathname)) {
-          const payload = location.query || { page: 1, pageSize: 10 }
-          dispatch({
-            type: 'query',
-            payload,
-          })
-        }
+        // if (pathMatchRegexp('/dashboard/detail', location.pathname)) {
+        //   const payload = location.query || { page: 1, pageSize: 10 }
+        //   dispatch({
+        //     type: 'query',
+        //     payload,
+        //   })
+        // }
       })
     },
   },
   effects: {
     *query({ payload = {} }, { call, put }) {
-      const data = yield call(queryUserList, payload)
+      const data = yield call(checkTask, payload)
+      console.log('check', data)
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.data,
-            pagination: {
-              current: Number(payload.page) || 1,
-              pageSize: Number(payload.pageSize) || 10,
-              total: data.total,
-            },
+            checkDetail: data,
           },
         })
       }
-    }
+    },
   },
-  reducers:{
+  reducers: {
     querySuccess(state, { payload }) {
-      const { list,pagination } = payload
       return {
         ...state,
-        list,
-        pagination
+        ...payload,
       }
     },
-  }
+  },
 })

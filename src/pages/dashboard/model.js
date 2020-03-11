@@ -4,10 +4,7 @@ import api from 'api'
 import { pathMatchRegexp } from 'utils'
 import { model } from 'utils/model'
 
-const {
-  queryHomeList,
-  queryHomeTitle
-} = api
+const { queryHomeList, queryHomeTitle } = api
 
 export default modelExtend(model, {
   namespace: 'dashboard',
@@ -15,7 +12,7 @@ export default modelExtend(model, {
     currentItem: {},
     modalVisible: false,
     modalType: 'create',
-    selectedRowKeys: [],
+    selectedRow: {},
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -39,7 +36,7 @@ export default modelExtend(model, {
         yield put({
           type: 'querySuccess',
           payload: {
-            titleList: data.data
+            titleList: data.data,
           },
         })
       }
@@ -50,18 +47,29 @@ export default modelExtend(model, {
         yield put({
           type: 'querySuccess',
           payload: {
-            ListContent: data.list
+            ListContent: data.list,
           },
         })
       }
-    }
+    },
+    *queryItem({ payload = {} }, { call, put }) {
+      yield put({
+        type: 'querySuccess',
+        payload: {
+          selectedRow: payload,
+        },
+      })
+    },
   },
-  reducers:{
+  reducers: {
+    showModal(state, { payload }) {
+      return { ...state, ...payload }
+    },
     querySuccess(state, { payload }) {
       return {
         ...state,
-        ...payload
+        ...payload,
       }
     },
-  }
+  },
 })
