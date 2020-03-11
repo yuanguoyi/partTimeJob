@@ -15,7 +15,7 @@ class List extends PureComponent {
    onClickRow = (record) => {
     return {
       onClick: () => {
-        router.push("/dashboard/detail")
+        router.push(`/dashboard/homeDetail?id=${123}`)
       },
     };
   }

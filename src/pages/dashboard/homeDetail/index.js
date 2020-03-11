@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import {Row,Col,Form,Input,Button} from 'antd';
 import DetailMain from '../components/DetailMain'
 import styles from './index.less';
+import {GetUrlParam} from 'utils'
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 @Form.create()
 class Detail extends Component {
+  componentDidMount(){
+    const id = GetUrlParam('id')
+    console.log(id)
+  }
   state = {  }
   render() { 
     const {form} = this.props

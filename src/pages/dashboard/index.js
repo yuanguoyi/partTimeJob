@@ -69,6 +69,7 @@ class Dashboard extends PureComponent {
             dataIndex: v.prop,
             key:v.prop,
             fixed: 'left',
+            width:'50'
           }
         } else if(i == (titleList.length-1)){
           json = {
@@ -76,12 +77,14 @@ class Dashboard extends PureComponent {
             dataIndex: v.prop,
             key:v.prop,
             fixed: 'right',
+            width:'50'
           }
         } else {
           json = {
             title: v.label,
             dataIndex: v.prop,
             key:v.prop,
+            width:'50'
           }
         }
         columns.push(json)
