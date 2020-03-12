@@ -19,7 +19,23 @@ class Detail extends Component {
     const id = GetUrlParam('id')
     const { dispatch, dashboard } = this.props
     const { titleList } = dashboard
-    console.log('detail', titleList)
+    const checkTaskDetail = JSON.parse(sessionStorage.getItem("checkTaskItem"))
+    let topTitList = []
+    let json = {}
+    console.log(checkTaskDetail.tmBasPartBase)
+    console.log(titleList)
+    let prop = "tmBasPartBase"
+    console.log(prop.split(".")[0])
+    if (titleList &&  titleList.length> 0) {
+      titleList.forEach((e,i) => {
+        json = {
+          label: e.label,
+          // value: e.prop.split(".")[0] ? checkTaskDetail.e.prop : null
+        }
+        topTitList.push(json)
+      });
+    }
+    console.log(topTitList)
     let params = {
       _params: id,
       _sourceID: 999,

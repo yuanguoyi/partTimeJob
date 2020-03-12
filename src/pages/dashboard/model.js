@@ -62,9 +62,9 @@ export default modelExtend(model, {
     },
   },
   reducers: {
-    showModal(state, { payload }) {
-      return { ...state, ...payload }
-    },
+    // showModal(state, { payload }) {
+    //   return { ...state, ...payload }
+    // },
     querySuccess(state, { payload }) {
       return {
         ...state,

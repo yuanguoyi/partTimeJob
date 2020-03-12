@@ -15,6 +15,9 @@ const { TabPane } = Tabs
   loading,
 }))
 class Dashboard extends PureComponent {
+  state = {
+    columns: [] // 动态头部
+  }
   componentDidMount() {
     const { dispatch } = this.props
     // 标题接口
@@ -31,6 +34,7 @@ class Dashboard extends PureComponent {
       checkUser: '',
     }
     this.getListData(initSearch)
+    this.getColumns()
   }
   getListData(value) {
     const { dispatch } = this.props
@@ -44,31 +48,9 @@ class Dashboard extends PureComponent {
       payload: listparams,
     })
   }
-  setItem(value) {
-    const { dispatch } = this.props
-    console.log('1', value)
-    // dispatch({
-    //   type:'dashboard/showModal',
-    //   payload: {
-    //     selected: value
-    //   }
-    // })
-  }
-  get filterProps() {
-    const { location, dispatch } = this.props
-    const { query } = location
-    return {
-      filter: {
-        ...query,
-      },
-      onFilterChange: value => {
-        this.getListData(value)
-      },
-    }
-  }
-  get listProps() {
-    const { dispatch, dashboard, loading } = this.props
-    const { titleList, ListContent } = dashboard
+  getColumns () {
+    const { dashboard } = this.props
+    const { titleList } = dashboard
     const columns = []
     if (titleList && titleList.length > 0) {
       let json = {}
@@ -100,13 +82,42 @@ class Dashboard extends PureComponent {
         columns.push(json)
       })
     }
+    this.setState({
+      columns: columns
+    })
+  }
+  setItem(value) {
+    const { dispatch } = this.props
+    console.log('1', value)
+    // dispatch({
+    //   type:'dashboard/showModal',
+    //   payload: {
+    //     selected: value
+    //   }
+    // })
+  }
+  get filterProps() {
+    const { location, dispatch } = this.props
+    const { query } = location
+    return {
+      filter: {
+        ...query,
+      },
+      onFilterChange: value => {
+        this.getListData(value)
+      },
+    }
+  }
+  get listProps() {
+    const { dispatch,dashboard, loading } = this.props
+    const { titleList, ListContent } = dashboard
     return {
       dataSource: ListContent,
       titleList: titleList,
-      columns: columns,
+      columns: this.state.columns,
       loading: loading.effects['dashboard/query'],
       onSwitchItem: value => {
-        this.setItem(value)
+        sessionStorage.setItem("checkTaskItem",JSON.stringify(value))
       },
     }
   }
